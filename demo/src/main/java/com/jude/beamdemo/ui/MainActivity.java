@@ -75,16 +75,8 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if(hasFocus){
-            NewEditText newEditText=new NewEditText(this);
-            FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-            BubblePopupWindow bubblePopupWindow=new BubblePopupWindow(this);
-            newEditText.setLayoutParams(params);
-            View view= LayoutInflater.from(this).inflate(R.layout.buble_pop,null);
-            bubblePopupWindow.setBubbleView(view);
-            bubblePopupWindow.setBackgroundDrawable(new BitmapDrawable());
-            bubblePopupWindow.setOutsideTouchable(true);
-            bubblePopupWindow.setFocusable(false);
-            bubblePopupWindow.show(tv_hello, Gravity.BOTTOM,120);
+            com.jude.beamdemo.view.BubblePopupWindow popupWindow=new com.jude.beamdemo.view.BubblePopupWindow(this);
+            popupWindow.showAt(tv_hello,Gravity.BOTTOM);
         }
     }
 }

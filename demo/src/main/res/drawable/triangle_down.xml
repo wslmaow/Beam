@@ -7,8 +7,8 @@
             android:pivotY="15%">
             <shape android:shape="rectangle">
                 <size
-                    android:width="16dp"
-                    android:height="16dp" />
+                    android:width="10dp"
+                    android:height="10dp" />
                 <solid android:color="#7d72ff" />
             </shape>
         </rotate>
