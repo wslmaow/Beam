@@ -108,14 +108,16 @@ public class BubblePopupWindow extends PopupWindow {
         if (xStart<0){
             int margin_left=parent.getWidth()/2-triangle.getMeasuredWidth()/2+parentLayoutParams.leftMargin;
             int margin_top=0;
-            int margin_right=content.getMeasuredWidth()-parent.getWidth()/2-triangle.getMeasuredWidth()/2-parentLayoutParams.leftMargin;
+            //int margin_right=content.getMeasuredWidth()-parent.getWidth()/2-triangle.getMeasuredWidth()/2-parentLayoutParams.leftMargin;
+            int margin_right=0;
             int margin_bottom=0;
             params.setMargins(margin_left,margin_top,margin_right,margin_bottom);
         }
         if(xEnd>getScreenWidth(context)){
             int margin_left=content.getMeasuredWidth()-parent.getWidth()/2-triangle.getMeasuredWidth()/2-parentLayoutParams.rightMargin;
             int margin_top=0;
-            int margin_right=parent.getWidth()/2-triangle.getMeasuredWidth()/2+parentLayoutParams.rightMargin;
+            //int margin_right=parent.getWidth()/2-triangle.getMeasuredWidth()/2+parentLayoutParams.rightMargin;
+            int margin_right=0;
             int margin_bottom=0;
             params.setMargins(margin_left,margin_top,margin_right,margin_bottom);
         }

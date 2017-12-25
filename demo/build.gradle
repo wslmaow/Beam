@@ -30,4 +30,5 @@ dependencies {
 // explicitly depend on RxJava's latest version for bug fixes and new features.
     compile 'io.reactivex.rxjava2:rxjava:2.1.7'
     compile 'com.yuyh.bubble:library:1.0.0'
+    compile 'me.relex:circleindicator:1.2.2@aar'
 }
