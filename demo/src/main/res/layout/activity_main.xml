@@ -24,4 +24,10 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/activity_horizontal_margin">
     </me.relex.circleindicator.CircleIndicator>
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"/>
+
 </RelativeLayout>

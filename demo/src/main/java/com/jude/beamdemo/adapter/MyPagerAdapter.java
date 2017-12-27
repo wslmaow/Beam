@@ -37,4 +37,9 @@ public class MyPagerAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView(views.get(position));
     }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return super.getPageTitle(position);
+    }
 }

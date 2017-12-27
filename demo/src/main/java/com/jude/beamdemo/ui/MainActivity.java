@@ -1,42 +1,28 @@
 package com.jude.beamdemo.ui;
 
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.BeamBaseActivity;
-import com.jude.beam.expansion.list.BeamListActivity;
 import com.jude.beamdemo.adapter.MyPagerAdapter;
 import com.jude.beamdemo.presenter.MainPresenter;
-import com.jude.beamdemo.view.NewEditText;
 import com.jude.beamdome.R;
-import com.jude.easyrecyclerview.adapter.BaseViewHolder;
-import com.yuyh.library.BubblePopupWindow;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import me.relex.circleindicator.CircleIndicator;
 
 /**
@@ -48,6 +34,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
     TextView tv_hello;
     ViewPager viewPager;
     CircleIndicator indicator;
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +43,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         tv_hello=(TextView) findViewById(R.id.tv_hello);
         viewPager=(ViewPager) findViewById(R.id.viewpager);
         indicator=(CircleIndicator) findViewById(R.id.indicator);
+        tabLayout=(TabLayout) findViewById(R.id.tablayout);
         initViewpager();
         data.add("aaa");
         data.add("bbb");
@@ -107,10 +95,17 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         ImageView view2=new ImageView(this);
         ViewGroup.LayoutParams params2=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         view2.setLayoutParams(params2);
-        view2.setBackgroundColor(Color.parseColor("#ee9c00"));
+        view2.setBackgroundColor(Color.parseColor("#339c55"));
         contemts.add(view2);
 
         viewPager.setAdapter(new MyPagerAdapter(contemts));
         indicator.setViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        TextView textView=new TextView(this);
+        FrameLayout.LayoutParams layoutParams=new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        textView.setText("Tab1");
+        textView.setLayoutParams(layoutParams);
+        tabLayout.getTabAt(0).setCustomView(textView);
     }
 }
