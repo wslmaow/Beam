@@ -11,23 +11,4 @@
         android:text="Hello"
         android:layout_marginLeft="5dp"
         android:layout_alignParentLeft="true"/>
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_hello">
-    </android.support.v4.view.ViewPager>
-    <me.relex.circleindicator.CircleIndicator
-        android:id="@+id/indicator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin">
-    </me.relex.circleindicator.CircleIndicator>
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tablayout"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"/>
-
 </RelativeLayout>
