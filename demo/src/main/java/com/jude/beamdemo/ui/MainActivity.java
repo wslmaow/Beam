@@ -4,11 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.animation.AnimationSet;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.BeamBaseActivity;
@@ -27,6 +30,8 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
     @Bind(R.id.tv_hello)
     TextView tv_hello;
     BubblePopupWindow popupWindow;
+    float x;
+    float y;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,18 +40,45 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         ButterKnife.bind(this);
 
         popupWindow = new BubblePopupWindow(this);
+        tv_hello.setClickable(true);
+        tv_hello.setEnabled(true);
+        tv_hello.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        x=motionEvent.getX();
+                        y=motionEvent.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        popupWindow.dismiss();
+                        RelativeLayout.LayoutParams params=(RelativeLayout.LayoutParams) tv_hello.getLayoutParams();
+                        params.leftMargin+=motionEvent.getX()-x;
+                        params.topMargin+=motionEvent.getY()-y;
+                        tv_hello.requestLayout();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        getViewLocation();
+                        popupWindow.showAt(tv_hello, Gravity.BOTTOM);
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
+            /*case MotionEvent.ACTION_DOWN:
                 getViewLocation();
+                x=event.getX();
+                y=event.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
                 popupWindow.dismiss();
-                float x=event.getX();
-                float y=event.getY();
+                tv_hello.setTranslationX(tv_hello.getX() + (event.getX() - x));
+                tv_hello.setTranslationY(tv_hello.getY() + (event.getY() - y));*/
 
                 /*AnimatorSet set=new AnimatorSet();
                 ObjectAnimator animator=ObjectAnimator.ofFloat(tv_hello,"translationX",
@@ -76,7 +108,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
 
                     }
                 });*/
-                return true;
+                //return true;
         }
         return super.onTouchEvent(event);
     }
@@ -88,6 +120,13 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
             getViewLocation();
             BubblePopupWindow popupWindow = new BubblePopupWindow(this);
 //            popupWindow.showAt(tv_hello, Gravity.BOTTOM);
+            Handler handler=new Handler();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this,"post runnable",Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
     private void getViewLocation(){
