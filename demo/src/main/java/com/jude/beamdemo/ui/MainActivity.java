@@ -1,14 +1,14 @@
 package com.jude.beamdemo.ui;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.RotateDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AnimationSet;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,14 +32,18 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
     BubblePopupWindow popupWindow;
     float x;
     float y;
+    @Bind(R.id.iv_drawable)
+    ImageView ivDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        handleDrawable();
 
         popupWindow = new BubblePopupWindow(this);
+
         tv_hello.setClickable(true);
         tv_hello.setEnabled(true);
         tv_hello.setOnTouchListener(new View.OnTouchListener() {
@@ -47,21 +51,28 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        x=motionEvent.getX();
-                        y=motionEvent.getY();
+                        x = motionEvent.getX();
+                        y = motionEvent.getY();
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        popupWindow.dismiss();
-                        RelativeLayout.LayoutParams params=(RelativeLayout.LayoutParams) tv_hello.getLayoutParams();
-                        params.leftMargin+=motionEvent.getX()-x;
-                        params.topMargin+=motionEvent.getY()-y;
+                        //popupWindow.dismiss();
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tv_hello.getLayoutParams();
+                        params.leftMargin += motionEvent.getX() - x;
+                        params.topMargin += motionEvent.getY() - y;
                         tv_hello.requestLayout();
                         break;
                     case MotionEvent.ACTION_UP:
                         getViewLocation();
-                        popupWindow.showAt(tv_hello, Gravity.BOTTOM);
+                        //popupWindow.showAt(tv_hello, Gravity.BOTTOM);
                         break;
                 }
+                return false;
+            }
+        });
+        ivDrawable.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int value=motionEvent.getAction();
                 return false;
             }
         });
@@ -108,7 +119,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
 
                     }
                 });*/
-                //return true;
+            //return true;
         }
         return super.onTouchEvent(event);
     }
@@ -118,18 +129,19 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
             getViewLocation();
-            BubblePopupWindow popupWindow = new BubblePopupWindow(this);
-//            popupWindow.showAt(tv_hello, Gravity.BOTTOM);
-            Handler handler=new Handler();
+            popupWindow.showAt(tv_hello, Gravity.BOTTOM);
+            setTouchLisener();
+            Handler handler = new Handler();
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(MainActivity.this,"post runnable",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "post runnable", Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
-    private void getViewLocation(){
+
+    private void getViewLocation() {
         int left = tv_hello.getLeft();
         int top = tv_hello.getTop();
         int right = tv_hello.getRight();
@@ -138,7 +150,36 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         float y = tv_hello.getY();
         float translationX = tv_hello.getTranslationX();
         float translationY = tv_hello.getTranslationY();
-        float scrollX=tv_hello.getScrollX();
-        float scrollY=tv_hello.getScrollY();
+        float scrollX = tv_hello.getScrollX();
+        float scrollY = tv_hello.getScrollY();
+    }
+
+    private void handleDrawable() {
+        TransitionDrawable transitionDrawable = (TransitionDrawable) tv_hello.getBackground();
+        transitionDrawable.startTransition(1500);
+//        RotateDrawable rotateDrawable=(RotateDrawable) ivDrawable.getDrawable();
+//        rotateDrawable.setLevel(10000);
+    }
+    private void setTouchLisener(){
+        final View contentView=popupWindow.getContentView();
+        contentView.setClickable(true);
+        contentView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        x = motionEvent.getX();
+                        y = motionEvent.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        popupWindow.update(contentView,(int)(contentView.getX()+(motionEvent.getX()-x)),
+                                (int)(contentView.getY()+(motionEvent.getY()-y)),
+                                contentView.getWidth(),contentView.getHeight());
+                        break;
+                }
+                return false;
+            }
+        });
     }
 }

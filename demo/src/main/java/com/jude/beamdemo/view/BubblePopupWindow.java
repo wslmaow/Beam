@@ -79,7 +79,7 @@ public class BubblePopupWindow extends PopupWindow {
         setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         setBackgroundDrawable(new BitmapDrawable());
-        setFocusable(false);
+        //setFocusable(false);
         setOutsideTouchable(false);
     }
     void setContent(int gravity){
