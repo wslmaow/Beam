@@ -1,7 +1,5 @@
 package com.jude.beamdemo.ui;
 
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.RotateDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +19,7 @@ import com.jude.beamdome.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Mr.Jude on 2016/2/22.
@@ -44,38 +43,9 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
 
         popupWindow = new BubblePopupWindow(this);
 
-        tv_hello.setClickable(true);
-        tv_hello.setEnabled(true);
-        tv_hello.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        x = motionEvent.getX();
-                        y = motionEvent.getY();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        //popupWindow.dismiss();
-                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tv_hello.getLayoutParams();
-                        params.leftMargin += motionEvent.getX() - x;
-                        params.topMargin += motionEvent.getY() - y;
-                        tv_hello.requestLayout();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        getViewLocation();
-                        //popupWindow.showAt(tv_hello, Gravity.BOTTOM);
-                        break;
-                }
-                return false;
-            }
-        });
-        ivDrawable.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                int value=motionEvent.getAction();
-                return false;
-            }
-        });
+        /*tv_hello.setClickable(true);
+        tv_hello.setEnabled(true);*/
+
     }
 
     @Override
@@ -160,26 +130,55 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
 //        RotateDrawable rotateDrawable=(RotateDrawable) ivDrawable.getDrawable();
 //        rotateDrawable.setLevel(10000);
     }
-    private void setTouchLisener(){
-        final View contentView=popupWindow.getContentView();
+
+    private void setTouchLisener() {
+        final View contentView = popupWindow.getContentView();
         contentView.setClickable(true);
         contentView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
 
-                switch (motionEvent.getAction()){
+                switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         x = motionEvent.getX();
                         y = motionEvent.getY();
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        popupWindow.update(contentView,(int)(contentView.getX()+(motionEvent.getX()-x)),
-                                (int)(contentView.getY()+(motionEvent.getY()-y)),
-                                contentView.getWidth(),contentView.getHeight());
+                        popupWindow.update((int) (motionEvent.getRawX() - x),
+                                (int) (motionEvent.getRawY() - y),
+                                contentView.getWidth(), contentView.getHeight());
                         break;
                 }
                 return false;
             }
         });
+
+        tv_hello.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        x = motionEvent.getX();
+                        y = motionEvent.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        //popupWindow.dismiss();
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tv_hello.getLayoutParams();
+                        params.leftMargin += motionEvent.getX() - x;
+                        params.topMargin += motionEvent.getY() - y;
+                        tv_hello.requestLayout();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        getViewLocation();
+                        //popupWindow.showAt(tv_hello, Gravity.BOTTOM);
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+    @OnClick(R.id.tv_hello)
+    public void onViewClicked() {
     }
 }
