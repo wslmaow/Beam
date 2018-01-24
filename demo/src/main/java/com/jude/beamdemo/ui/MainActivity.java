@@ -129,6 +129,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         transitionDrawable.startTransition(1500);
 //        RotateDrawable rotateDrawable=(RotateDrawable) ivDrawable.getDrawable();
 //        rotateDrawable.setLevel(10000);
+        ivDrawable.getDrawable().mutate().setAlpha(25);
     }
 
     private void setTouchLisener() {

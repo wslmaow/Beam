@@ -8,4 +8,5 @@
     <color name="pink">#e91e63</color>
     <color name="blue">#56abe4</color>
     <color name="blue_light">#03a9f4</color>
+    <color name="setting_alpha">#b2ffffff</color>
 </resources>
