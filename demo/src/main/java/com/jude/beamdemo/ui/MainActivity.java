@@ -3,6 +3,12 @@ package com.jude.beamdemo.ui;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.UnderlineSpan;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -50,6 +56,8 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
 
         /*tv_hello.setClickable(true);
         tv_hello.setEnabled(true);*/
+        setSpan(tv_hello.getText().toString());
+        //tv_hello.setText(setSpan(tv_hello.getText().toString()));
         String uri="https://101.204.239.166/goldenBowl/rest/ioImage/bannner/5233375f791d4dd1816e5263fd470f73.png?userId=11070&token=4950b9f174cfc236b5a0a667660cc926";
         //String uri = "https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png";
         Glide.with(this)
@@ -201,6 +209,14 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
                 return false;
             }
         });
+    }
+
+    private void setSpan(String content){
+        SpannableString spannableString=new SpannableString(content);
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+        spannableString.setSpan(new RelativeSizeSpan(2.0f),0,3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableStringBuilder.append(spannableString).setSpan(new UnderlineSpan(),0,3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tv_hello.setText(spannableString);
     }
 
     @OnClick(R.id.tv_hello)
