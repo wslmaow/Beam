@@ -11,6 +11,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.BeamBaseActivity;
 import com.jude.beamdemo.presenter.MainPresenter;
@@ -45,6 +50,25 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
 
         /*tv_hello.setClickable(true);
         tv_hello.setEnabled(true);*/
+        String uri="https://101.204.239.166/goldenBowl/rest/ioImage/bannner/5233375f791d4dd1816e5263fd470f73.png?userId=11070&token=4950b9f174cfc236b5a0a667660cc926";
+        //String uri = "https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png";
+        Glide.with(this)
+                .load(uri)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .error(R.drawable.bg_main_bottom)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .into(ivDrawable);
 
     }
 
