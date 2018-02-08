@@ -26,10 +26,49 @@
     <ImageView
         android:id="@+id/iv_drawable2"
         android:layout_width="200dp"
-        android:layout_height="125dp"
+        android:layout_height="200dp"
         android:layout_below="@+id/iv_drawable"
+        android:background="@drawable/bg_windmill"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:src="@drawable/layer_list_drawable"
-        android:visibility="visible"
-        android:scaleType="fitXY"/>
+        android:visibility="gone"
+        android:scaleType="centerCrop"
+        />
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_marginBottom="10dp">
+        <TextView
+            android:id="@+id/btn_on_off"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="ON/OFF"
+            android:gravity="center"
+            android:layout_margin="2dp"
+            android:textColor="#000"
+            android:background="@drawable/bg_button_on_off"/>
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Ⅰ"
+            android:textColor="@color/orange"/>
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Ⅱ"
+            android:textColor="@color/orange"/>
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Ⅲ"
+            android:textColor="@color/orange"/>
+    </RadioGroup>
 </RelativeLayout>

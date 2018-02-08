@@ -1,18 +1,33 @@
 package com.jude.beamdemo.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.ObjectAnimator;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.TransitionDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.IdRes;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +59,12 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
     float y;
     @Bind(R.id.iv_drawable)
     ImageView ivDrawable;
+    @Bind(R.id.iv_drawable2)
+    ImageView ivDrawable2;
+    @Bind(R.id.radioGroup)
+    RadioGroup radioGroup;
+    @Bind(R.id.btn_on_off)
+    TextView btnOnOff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +72,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         handleDrawable();
+        setWindmill();
 
         popupWindow = new BubblePopupWindow(this);
 
@@ -58,7 +80,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         tv_hello.setEnabled(true);*/
         setSpan(tv_hello.getText().toString());
         //tv_hello.setText(setSpan(tv_hello.getText().toString()));
-        String uri="https://101.204.239.166/goldenBowl/rest/ioImage/bannner/5233375f791d4dd1816e5263fd470f73.png?userId=11070&token=4950b9f174cfc236b5a0a667660cc926";
+        String uri = "https://101.204.239.166/goldenBowl/rest/ioImage/bannner/5233375f791d4dd1816e5263fd470f73.png?userId=11070&token=4950b9f174cfc236b5a0a667660cc926";
         //String uri = "https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png";
         Glide.with(this)
                 .load(uri)
@@ -211,15 +233,139 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         });
     }
 
-    private void setSpan(String content){
-        SpannableString spannableString=new SpannableString(content);
+    private void setSpan(String content) {
+        SpannableString spannableString = new SpannableString(content);
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
-        spannableString.setSpan(new RelativeSizeSpan(2.0f),0,3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spannableStringBuilder.append(spannableString).setSpan(new UnderlineSpan(),0,3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new RelativeSizeSpan(2.0f), 0, 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableStringBuilder.append(spannableString).setSpan(new UnderlineSpan(), 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tv_hello.setText(spannableString);
     }
 
-    @OnClick(R.id.tv_hello)
+    private void setWindmill() {
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                ObjectAnimator anim = ((ObjectAnimator) ivDrawable2.getTag());
+                if (anim==null)return;
+                switch (i) {
+                    case 1:
+                        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
+                            anim.pause();
+                            anim.setDuration(400);
+                            anim.resume();
+                        }
+                        break;
+                    case 2:
+                        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
+                            anim.pause();
+                            anim.setDuration(200);
+                            anim.resume();
+                        }
+                        break;
+                    case 3:
+                        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
+                            anim.pause();
+                            anim.setDuration(50);
+                            anim.resume();
+                        }
+                        break;
+                }
+            }
+        });
+    }
+
+    @OnClick(R.id.btn_on_off)
     public void onViewClicked() {
+        turnOnOff();
+    }
+
+    @SuppressWarnings("ResourceType")
+    void turnOnOff(){
+        Animator rotate = AnimatorInflater.loadAnimator(this, R.anim.roate_windmill_animator);
+        rotate.setInterpolator(new AccelerateInterpolator());
+        rotate.setTarget(ivDrawable2);
+
+        final ObjectAnimator anim = ObjectAnimator.ofFloat(ivDrawable2, "rotation", 0f, 360f);
+        anim.setDuration(500);
+        anim.setInterpolator(new LinearInterpolator());
+        anim.setRepeatCount(Animation.INFINITE);
+
+        final ObjectAnimator anim2 = ObjectAnimator.ofFloat(ivDrawable2, "rotation", 0f, 360f);
+        anim2.setDuration(1000);
+        anim2.setInterpolator(new DecelerateInterpolator());
+
+        if (ivDrawable2.getTag() == null) {
+            btnOnOff.setText(getSpanText(true));
+            rotate.start();
+            rotate.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    anim.start();
+                    ivDrawable2.setTag(anim);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
+        } else {
+            final ObjectAnimator animator2=((ObjectAnimator) ivDrawable2.getTag());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                if (animator2.isPaused()){
+                    btnOnOff.setText(getSpanText(true));
+                    rotate.start();
+                    rotate.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animator) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animator) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                                animator2.resume();
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animator) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animator) {
+
+                        }
+                    });
+                }else {
+                    btnOnOff.setText(getSpanText(false));
+                    animator2.pause();
+                    anim2.start();
+                }
+            }
+        }
+    }
+
+    SpannableString getSpanText(boolean turnOn){
+        SpannableString spannableString=new SpannableString(btnOnOff.getText().toString());
+        if (turnOn){
+            spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.orange)),0,2,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new StyleSpan(Typeface.BOLD),0,2,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }else {
+            spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.orange)),3,6,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new StyleSpan(Typeface.BOLD),3,6,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return spannableString;
     }
 }
