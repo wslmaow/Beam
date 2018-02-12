@@ -1,4 +1,4 @@
-package com.jude.beamdemo.glide;
+package com.jude.beamdemo.utils;
 
 import java.io.InputStream;
 

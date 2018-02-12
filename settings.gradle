@@ -1,1 +1,1 @@
-include ':beam',':demo'
+include ':beam', ':demo'

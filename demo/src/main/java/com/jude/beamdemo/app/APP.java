@@ -10,7 +10,7 @@ import com.jude.beam.expansion.BeamBaseActivity;
 import com.jude.beam.expansion.list.ListConfig;
 import com.jude.beam.expansion.overlay.ViewExpansionDelegate;
 import com.jude.beam.expansion.overlay.ViewExpansionDelegateProvider;
-import com.jude.beamdemo.glide.RetrofitUtils;
+import com.jude.beamdemo.utils.RetrofitUtils;
 import com.jude.beamdome.R;
 import com.jude.utils.JUtils;
 

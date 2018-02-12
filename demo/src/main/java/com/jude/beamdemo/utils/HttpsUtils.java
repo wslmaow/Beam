@@ -1,4 +1,4 @@
-package com.jude.beamdemo.glide;
+package com.jude.beamdemo.utils;
 
 /**
  * Created by Administrator on 2018/2/1.
