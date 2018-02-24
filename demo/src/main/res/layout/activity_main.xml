@@ -57,18 +57,18 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Ⅰ"
-            android:textColor="@color/orange"/>
+            android:textColor="@drawable/selector_text_color"/>
         <RadioButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Ⅱ"
-            android:textColor="@color/orange"/>
+            android:textColor="@color/colorAccent"/>
         <RadioButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Ⅲ"
-            android:textColor="@color/orange"/>
+            android:textColor="@color/colorAccent"/>
     </RadioGroup>
 </RelativeLayout>

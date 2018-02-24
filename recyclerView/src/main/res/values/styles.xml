@@ -1,0 +1,32 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/orange</item>
+        <item name="colorPrimary">@color/black_deep</item>
+    </style>
+    <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/orange</item>
+        <item name="colorPrimary">@color/black_deep</item>
+    </style>
+
+    <style name="test" parent="@style/Theme.AppCompat.Light.NoActionBar" />
+    <style
+        name="PopupAnimation"
+
+        parent="android:Animation"
+
+        mce_bogus="1">
+
+        <item
+            name="android:windowEnterAnimation">@anim/popup_enter</item>
+
+        <item
+            name="android:windowExitAnimation">@anim/popup_exit</item>
+
+    </style>
+
+
+</resources>
