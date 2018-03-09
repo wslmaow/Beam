@@ -3,12 +3,17 @@ package com.feb.demo.ui;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -37,9 +42,19 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.feb.demo.R;
 import com.feb.demo.presenter.MainPresenter;
+import com.feb.demo.utils.BitmapUtils;
 import com.feb.demo.view.BubblePopupWindow;
 import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.BeamBaseActivity;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -81,11 +96,12 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         String uri = "https://101.204.239.166/goldenBowl/rest/ioImage/bannner/5233375f791d4dd1816e5263fd470f73.png?userId=11069&token=6c140b78ca5c3746deff7fabf94fab8d";
         //String uri = "https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png";
         Glide.with(this)
-                .load(uri)
+                .load("")
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.bg_main_bottom)
                 .error(R.drawable.bg_main_bottom)
+                .error(new BitmapDrawable(BitmapUtils.decodeSampledBitmapFromResource(getResources(),
+                        R.drawable.bg_main_bottom,100,62)))
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -98,6 +114,11 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
                     }
                 })
                 .into(ivDrawable);
+
+        long length=BitmapUtils.getBitmapSize(BitmapFactory.decodeResource(getResources(),R.drawable.bg_main_bottom));
+        long length2=BitmapUtils.getBitmapSize(BitmapUtils.decodeSampledBitmapFromResource(getResources(),
+                R.drawable.bg_main_bottom,100,62));
+        tv_hello.setText(length+","+length2);
 
     }
 
@@ -366,5 +387,27 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
             spannableString.setSpan(new StyleSpan(Typeface.BOLD),3,6,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         return spannableString;
+    }
+
+    private Executor getThreadPoolExecutor(){
+        int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
+        int KEEP_ALIVE_TIME = 1;
+        TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
+        BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<Runnable>(128);
+        ExecutorService executorService = new ThreadPoolExecutor(NUMBER_OF_CORES,
+                NUMBER_OF_CORES * 2, KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_UNIT, taskQueue,
+                new ThreadFactory() {
+                    @Override
+                    public Thread newThread(@NonNull Runnable runnable) {
+                        return new Thread(runnable, "myThread");
+                    }
+                },
+                new RejectedExecutionHandler() {
+                    @Override
+                    public void rejectedExecution(Runnable runnable, ThreadPoolExecutor threadPoolExecutor) {
+
+                    }
+        });
+        return executorService;
     }
 }

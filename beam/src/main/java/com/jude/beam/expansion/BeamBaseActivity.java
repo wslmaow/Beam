@@ -14,6 +14,7 @@ import com.jude.beam.R;
 import com.jude.beam.bijection.BeamAppCompatActivity;
 import com.jude.beam.bijection.Presenter;
 import com.jude.beam.expansion.overlay.ViewExpansionDelegate;
+import com.timmy.tdialog.TDialog;
 
 /**
  * Created by Mr.Jude on 2015/8/17.
@@ -122,7 +123,4 @@ public class  BeamBaseActivity<T extends Presenter> extends BeamAppCompatActivit
     protected final <E extends View> E viewId(@IdRes int id){
         return (E)findViewById(id);
     }
-
-
-
 }

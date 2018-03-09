@@ -3,40 +3,47 @@ package com.feb.webview;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class MyWebviewActivity extends AppCompatActivity {
 
-    @butterknife.Bind(R.id.title)
-    TextView title;
-    @butterknife.Bind(R.id.webView)
+    @Bind(R.id.webView)
     WebView webView;
+    @Bind(R.id.progressBar)
+    ProgressBar progressBar;
+    @Bind(R.id.progressBar_bg)
+    FrameLayout progressBarBg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_webview);
-        butterknife.ButterKnife.bind(this);
+        ButterKnife.bind(this);
         initParams();
         initView();
         //initListener();
     }
 
-    private void initParams(){}
+    private void initParams() {
+    }
 
-    private void initView(){
+    private void initView() {
         //webView.loadUrl("http://fanyi.baidu.com/?aldtype=16047#en/zh/NARROW");
         //webView.loadUrl("http://m.hexun.com/insurance/2017-12-11/191937627.html?from=timeline&isappinstalled=0%22");
         webView.loadUrl("http://www.mobius-china.com/taibaovideo//");
-        webView.setWebViewClient(new WebViewClient(){
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.startsWith("http://") || url.startsWith("https://")) {
@@ -46,18 +53,24 @@ public class MyWebviewActivity extends AppCompatActivity {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));
-                    try {
-                        startActivity(intent);
-                    } catch (ActivityNotFoundException e) {
-                        return false;
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        try {
+                            startActivity(intent);
+                        } catch (ActivityNotFoundException e) {
+                            Log.e("ll", e.toString());
+                        }
                     }
                 }
                 return true;
             }
 
-
+            @Override
+            public void onPageCommitVisible(WebView view, String url) {
+                super.onPageCommitVisible(view, url);
+                progressBarBg.setVisibility(View.GONE);
+            }
         });
-        WebSettings webSettings=webView.getSettings();
+        WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webSettings.setLoadWithOverviewMode(true);
@@ -79,12 +92,12 @@ public class MyWebviewActivity extends AppCompatActivity {
 
     }
 
-    private void initListener(){
+    private void initListener() {
         webView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if(keyEvent.getAction()==KeyEvent.ACTION_DOWN){
-                    if (i==KeyEvent.KEYCODE_BACK && webView.canGoBack()){
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (i == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
                         webView.goBack();
                         return true;
                     }
@@ -97,7 +110,8 @@ public class MyWebviewActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode==KeyEvent.ACTION_DOWN){}
+        if (keyCode == KeyEvent.ACTION_DOWN) {
+        }
         return super.onKeyDown(keyCode, event);
     }
 }

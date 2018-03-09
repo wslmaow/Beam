@@ -25,7 +25,7 @@
         android:scaleType="fitXY"/>
     <ImageView
         android:id="@+id/iv_drawable2"
-        android:layout_width="200dp"
+        android:layout_width="320dp"
         android:layout_height="200dp"
         android:layout_below="@+id/iv_drawable"
         android:background="@drawable/bg_windmill"
