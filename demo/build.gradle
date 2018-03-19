@@ -38,5 +38,5 @@ dependencies {
     /*提供的Module*/
     compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
     compile 'com.alibaba:fastjson:1.1.54.android'
-
+    compile 'com.github.chrisbanes:PhotoView:2.1.3'
 }

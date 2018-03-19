@@ -44,6 +44,7 @@ import com.feb.demo.R;
 import com.feb.demo.presenter.MainPresenter;
 import com.feb.demo.utils.BitmapUtils;
 import com.feb.demo.view.BubblePopupWindow;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.BeamBaseActivity;
 
@@ -71,7 +72,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
     float x;
     float y;
     @Bind(R.id.iv_drawable)
-    ImageView ivDrawable;
+    PhotoView ivDrawable;
     @Bind(R.id.iv_drawable2)
     ImageView ivDrawable2;
     @Bind(R.id.radioGroup)

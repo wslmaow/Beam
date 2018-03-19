@@ -16,25 +16,25 @@
                 android:id="@+id/progressBar"
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="9dp"
                 android:layout_margin="5dp"
-                android:progressBackgroundTint="@color/colorAccent"
+                android:progressBackgroundTint="#234567"
                 android:layout_above="@+id/layout_control"/>
             <LinearLayout
                 android:id="@+id/layout_control"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_margin="5dp"
                 android:layout_alignParentBottom="true">
                 <TextView
                     android:id="@+id/tv_currentTime"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:layout_weight="1"
                     android:gravity="left"
-                    android:textColor="#fff"
-                    android:textStyle="bold"/>
+                    android:textColor="#fff"/>
                 <TextView
                     android:id="@+id/pause"
                     android:layout_width="0dp"
@@ -51,9 +51,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:layout_weight="1"
-                    android:textSize="20sp"
-                    android:textColor="#fff"
-                    android:textStyle="bold"/>
+                    android:textSize="15sp"
+                    android:textColor="#fff"/>
             </LinearLayout>
 
         </RelativeLayout>

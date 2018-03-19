@@ -14,7 +14,7 @@
         android:background="@drawable/clip_drawable_demo"
         android:textSize="20dp"
         />
-    <ImageView
+    <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/iv_drawable"
         android:layout_width="200dp"
         android:layout_height="125dp"
