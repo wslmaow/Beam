@@ -31,7 +31,6 @@
         android:background="@drawable/bg_windmill"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:visibility="gone"
         android:scaleType="centerCrop"
         />
     <RadioGroup
@@ -40,7 +39,6 @@
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:visibility="gone"
         android:layout_marginBottom="10dp">
         <TextView
             android:id="@+id/btn_on_off"

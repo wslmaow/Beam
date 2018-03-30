@@ -40,6 +40,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.feb.demo.BuildConfig;
 import com.feb.demo.R;
 import com.feb.demo.presenter.MainPresenter;
 import com.feb.demo.utils.BitmapUtils;
@@ -87,6 +88,16 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         ButterKnife.bind(this);
         handleDrawable();
         setWindmill();
+
+        if (BuildConfig.FLAVOR.equals("app2")){
+            radioGroup.setVisibility(View.GONE);
+            ivDrawable2.setVisibility(View.GONE);
+            btnOnOff.setVisibility(View.GONE);
+        }else {
+            radioGroup.setVisibility(View.VISIBLE);
+            ivDrawable2.setVisibility(View.VISIBLE);
+            btnOnOff.setVisibility(View.VISIBLE);
+        }
 
         popupWindow = new BubblePopupWindow(this);
 

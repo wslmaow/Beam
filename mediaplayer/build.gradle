@@ -1,9 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "25.0.2"
-
+    signingConfigs {
+        config {
+            keyAlias 'android.keystore'
+            keyPassword '123456'
+            storeFile file('E:/android.keystore')
+            storePassword '123456'
+        }
+    }
+    compileSdkVersion 25
     defaultConfig {
         applicationId "com.example.mediaplayer"
         minSdkVersion 15
@@ -24,6 +30,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.config
         }
     }
 }
