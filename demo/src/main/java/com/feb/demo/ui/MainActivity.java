@@ -3,15 +3,19 @@ package com.feb.demo.ui;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.text.Spannable;
@@ -23,6 +27,7 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -41,13 +46,21 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.feb.demo.BuildConfig;
+import com.feb.demo.MyApplication;
 import com.feb.demo.R;
 import com.feb.demo.presenter.MainPresenter;
 import com.feb.demo.utils.BitmapUtils;
+import com.feb.demo.utils.WindowUtil;
 import com.feb.demo.view.BubblePopupWindow;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.jude.beam.bijection.FloatWindoeEvent;
+import com.jude.beam.bijection.HideFloatWindowEvent;
 import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.BeamBaseActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
@@ -89,6 +102,13 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         handleDrawable();
         setWindmill();
 
+        ivDrawable2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,TestActivity.class));
+            }
+        });
+
         if (BuildConfig.FLAVOR.equals("app2")){
             radioGroup.setVisibility(View.GONE);
             ivDrawable2.setVisibility(View.GONE);
@@ -101,8 +121,8 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
 
         popupWindow = new BubblePopupWindow(this);
 
-        /*tv_hello.setClickable(true);
-        tv_hello.setEnabled(true);*/
+        tv_hello.setClickable(true);
+        tv_hello.setEnabled(true);
         setSpan(tv_hello.getText().toString());
         //tv_hello.setText(setSpan(tv_hello.getText().toString()));
         String uri = "https://101.204.239.166/goldenBowl/rest/ioImage/bannner/5233375f791d4dd1816e5263fd470f73.png?userId=11069&token=6c140b78ca5c3746deff7fabf94fab8d";
@@ -132,6 +152,46 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
                 R.drawable.bg_main_bottom,100,62));
         tv_hello.setText(length+","+length2);
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+            WindowUtil.hidePopupWindow();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+    }
+    public void checkDrawOverlayPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)return;
+        /** check if we already  have permission to draw over other apps */
+        if (!Settings.canDrawOverlays(getApplicationContext())) {
+            /** if not construct intent to request permission */
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            /** request permission via start activity for result */
+            startActivityForResult(intent, 111);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+       // EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FloatWindoeEvent floatWindoeEvent){
+        WindowUtil.showPopupWindow(this);
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(HideFloatWindowEvent hideFloatWindowEvent){
+        WindowUtil.hidePopupWindow();
     }
 
     @Override
@@ -241,6 +301,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         });
 
         tv_hello.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
@@ -422,4 +483,5 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         });
         return executorService;
     }
+
 }

@@ -19,7 +19,6 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-        flavorDimensions "versionCode"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
@@ -36,11 +35,14 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    flavorDimensions "channle", "version"
     productFlavors{
         app1{
+            dimension "version"
             resValue "string","app_name","windwill"
         }
         app2{
+            dimension "channle"
             applicationIdSuffix ".deno"
             resValue "string","app_name","demo"
         }

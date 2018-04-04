@@ -1,13 +1,18 @@
 package com.jude.beam.expansion;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.PopupWindow;
 
 import com.jude.beam.Beam;
 import com.jude.beam.R;
@@ -15,6 +20,8 @@ import com.jude.beam.bijection.BeamAppCompatActivity;
 import com.jude.beam.bijection.Presenter;
 import com.jude.beam.expansion.overlay.ViewExpansionDelegate;
 import com.timmy.tdialog.TDialog;
+
+import java.util.zip.Inflater;
 
 /**
  * Created by Mr.Jude on 2015/8/17.
@@ -78,7 +85,29 @@ public class  BeamBaseActivity<T extends Presenter> extends BeamAppCompatActivit
             onSetToolbar(toolbar);
     }
 
-    public Toolbar getToolbar(){
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus){
+            PopupWindow popupWindow= new PopupWindow();
+            initPopupWindow(popupWindow);
+            int width = getWindowManager().getDefaultDisplay().getWidth();
+            int height = getWindowManager().getDefaultDisplay().getHeight();
+            popupWindow.showAtLocation(getParentView(), Gravity.NO_GRAVITY,width,height*3/4);
+        }
+    }
+
+    private void initPopupWindow(PopupWindow popupWindow){
+        View content = LayoutInflater.from(this).inflate(R.layout.beam_view_error,null);
+        popupWindow.setContentView(content);
+        popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        //setFocusable(false);
+        popupWindow.setOutsideTouchable(false);
+    }
+
+     public Toolbar getToolbar(){
         return toolbar;
     }
 
