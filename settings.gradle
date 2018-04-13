@@ -1,1 +1,1 @@
-include ':beam', ':recyclerView', ':mediaplayer', ':demo', ':webview'
+include ':beam', ':recyclerView', ':mediaplayer', ':demo', ':webview', ':coordinatorLayout'

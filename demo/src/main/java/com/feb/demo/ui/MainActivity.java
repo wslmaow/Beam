@@ -105,15 +105,15 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         ivDrawable2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,TestActivity.class));
+                startActivity(new Intent(MainActivity.this, TestActivity.class));
             }
         });
 
-        if (BuildConfig.FLAVOR.equals("app2")){
+        if (BuildConfig.FLAVOR.equals("app2")) {
             radioGroup.setVisibility(View.GONE);
             ivDrawable2.setVisibility(View.GONE);
             btnOnOff.setVisibility(View.GONE);
-        }else {
+        } else {
             radioGroup.setVisibility(View.VISIBLE);
             ivDrawable2.setVisibility(View.VISIBLE);
             btnOnOff.setVisibility(View.VISIBLE);
@@ -133,7 +133,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.drawable.bg_main_bottom)
                 .error(new BitmapDrawable(BitmapUtils.decodeSampledBitmapFromResource(getResources(),
-                        R.drawable.bg_main_bottom,100,62)))
+                        R.drawable.bg_main_bottom, 100, 62)))
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -147,19 +147,11 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
                 })
                 .into(ivDrawable);
 
-        long length=BitmapUtils.getBitmapSize(BitmapFactory.decodeResource(getResources(),R.drawable.bg_main_bottom));
-        long length2=BitmapUtils.getBitmapSize(BitmapUtils.decodeSampledBitmapFromResource(getResources(),
-                R.drawable.bg_main_bottom,100,62));
-        tv_hello.setText(length+","+length2);
+        long length = BitmapUtils.getBitmapSize(BitmapFactory.decodeResource(getResources(), R.drawable.bg_main_bottom));
+        long length2 = BitmapUtils.getBitmapSize(BitmapUtils.decodeSampledBitmapFromResource(getResources(),
+                R.drawable.bg_main_bottom, 100, 62));
+        tv_hello.setText(length + "," + length2);
 
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK){
-            WindowUtil.hidePopupWindow();
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -167,31 +159,69 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
 
         super.onStart();
     }
-    public void checkDrawOverlayPermission() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)return;
-        /** check if we already  have permission to draw over other apps */
-        if (!Settings.canDrawOverlays(getApplicationContext())) {
-            /** if not construct intent to request permission */
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + getPackageName()));
-            /** request permission via start activity for result */
-            startActivityForResult(intent, 111);
-        }
-    }
 
     @Override
     protected void onStop() {
-       // EventBus.getDefault().unregister(this);
+        // EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(FloatWindoeEvent floatWindoeEvent){
-        WindowUtil.showPopupWindow(this);
+    private void handleDrawable() {
+        TransitionDrawable transitionDrawable = (TransitionDrawable) tv_hello.getBackground();
+        transitionDrawable.startTransition(1500);
+//        RotateDrawable rotateDrawable=(RotateDrawable) ivDrawable.getDrawable();
+//        rotateDrawable.setLevel(10000);
+        ivDrawable.getDrawable().mutate().setAlpha(25);
     }
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(HideFloatWindowEvent hideFloatWindowEvent){
-        WindowUtil.hidePopupWindow();
+
+    private void setWindmill() {
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                ObjectAnimator anim = ((ObjectAnimator) ivDrawable2.getTag());
+                if (anim == null) return;
+                switch (i) {
+                    case 1:
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            anim.pause();
+                            anim.setDuration(400);
+                            anim.resume();
+                        }
+                        break;
+                    case 2:
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            anim.pause();
+                            anim.setDuration(200);
+                            anim.resume();
+                        }
+                        break;
+                    case 3:
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            anim.pause();
+                            anim.setDuration(50);
+                            anim.resume();
+                        }
+                        break;
+                }
+            }
+        });
+    }
+
+    private void setSpan(String content) {
+        SpannableString spannableString = new SpannableString(content);
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+        spannableString.setSpan(new RelativeSizeSpan(2.0f), 0, 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableStringBuilder.append(spannableString).setSpan(new UnderlineSpan(), 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tv_hello.setText(spannableString);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            WindowUtil.hidePopupWindow();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -240,6 +270,28 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         return super.onTouchEvent(event);
     }
 
+    public void checkDrawOverlayPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
+        /** check if we already  have permission to draw over other apps */
+        if (!Settings.canDrawOverlays(getApplicationContext())) {
+            /** if not construct intent to request permission */
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            /** request permission via start activity for result */
+            startActivityForResult(intent, 111);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FloatWindoeEvent floatWindoeEvent) {
+        WindowUtil.showPopupWindow(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(HideFloatWindowEvent hideFloatWindowEvent) {
+        WindowUtil.hidePopupWindow();
+    }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -268,14 +320,6 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         float translationY = tv_hello.getTranslationY();
         float scrollX = tv_hello.getScrollX();
         float scrollY = tv_hello.getScrollY();
-    }
-
-    private void handleDrawable() {
-        TransitionDrawable transitionDrawable = (TransitionDrawable) tv_hello.getBackground();
-        transitionDrawable.startTransition(1500);
-//        RotateDrawable rotateDrawable=(RotateDrawable) ivDrawable.getDrawable();
-//        rotateDrawable.setLevel(10000);
-        ivDrawable.getDrawable().mutate().setAlpha(25);
     }
 
     private void setTouchLisener() {
@@ -326,55 +370,13 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         });
     }
 
-    private void setSpan(String content) {
-        SpannableString spannableString = new SpannableString(content);
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
-        spannableString.setSpan(new RelativeSizeSpan(2.0f), 0, 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spannableStringBuilder.append(spannableString).setSpan(new UnderlineSpan(), 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tv_hello.setText(spannableString);
-    }
-
-    private void setWindmill() {
-
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
-                ObjectAnimator anim = ((ObjectAnimator) ivDrawable2.getTag());
-                if (anim==null)return;
-                switch (i) {
-                    case 1:
-                        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
-                            anim.pause();
-                            anim.setDuration(400);
-                            anim.resume();
-                        }
-                        break;
-                    case 2:
-                        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
-                            anim.pause();
-                            anim.setDuration(200);
-                            anim.resume();
-                        }
-                        break;
-                    case 3:
-                        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
-                            anim.pause();
-                            anim.setDuration(50);
-                            anim.resume();
-                        }
-                        break;
-                }
-            }
-        });
-    }
-
     @OnClick(R.id.btn_on_off)
     public void onViewClicked() {
         turnOnOff();
     }
 
     @SuppressWarnings("ResourceType")
-    void turnOnOff(){
+    void turnOnOff() {
         Animator rotate = AnimatorInflater.loadAnimator(this, R.anim.roate_windmill_animator);
         rotate.setInterpolator(new AccelerateInterpolator());
         rotate.setTarget(ivDrawable2);
@@ -414,9 +416,9 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
                 }
             });
         } else {
-            final ObjectAnimator animator2=((ObjectAnimator) ivDrawable2.getTag());
+            final ObjectAnimator animator2 = ((ObjectAnimator) ivDrawable2.getTag());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                if (animator2.isPaused()){
+                if (animator2.isPaused()) {
                     btnOnOff.setText(getSpanText(true));
                     rotate.start();
                     rotate.addListener(new Animator.AnimatorListener() {
@@ -441,7 +443,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
 
                         }
                     });
-                }else {
+                } else {
                     btnOnOff.setText(getSpanText(false));
                     animator2.pause();
                     anim2.start();
@@ -450,19 +452,19 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         }
     }
 
-    SpannableString getSpanText(boolean turnOn){
-        SpannableString spannableString=new SpannableString(btnOnOff.getText().toString());
-        if (turnOn){
-            spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.orange)),0,2,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(new StyleSpan(Typeface.BOLD),0,2,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }else {
-            spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.orange)),3,6,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(new StyleSpan(Typeface.BOLD),3,6,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    SpannableString getSpanText(boolean turnOn) {
+        SpannableString spannableString = new SpannableString(btnOnOff.getText().toString());
+        if (turnOn) {
+            spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.orange)), 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } else {
+            spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.orange)), 3, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new StyleSpan(Typeface.BOLD), 3, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         return spannableString;
     }
 
-    private Executor getThreadPoolExecutor(){
+    private Executor getThreadPoolExecutor() {
         int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
         int KEEP_ALIVE_TIME = 1;
         TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
@@ -480,7 +482,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
                     public void rejectedExecution(Runnable runnable, ThreadPoolExecutor threadPoolExecutor) {
 
                     }
-        });
+                });
         return executorService;
     }
 

@@ -50,20 +50,6 @@ public class MyMediaPlayerActivity extends BeamBaseActivity {
     TextView tvTotalTime;
     @Bind(R.id.layout_control)
     LinearLayout layoutControl;
-
-    enum media_player_states {
-        MEDIA_PLAYER_STATE_ERROR,
-        MEDIA_PLAYER_IDLE, // 1
-        MEDIA_PLAYER_INITIALIZED, // 2
-        MEDIA_PLAYER_PREPARING, // 4
-        MEDIA_PLAYER_PREPARED, // 8
-        MEDIA_PLAYER_STARTED, // 16
-        MEDIA_PLAYER_PAUSED5, // 32
-        MEDIA_PLAYER_STOPPED, // 64
-        MEDIA_PLAYER_PLAYBACK_COMPLETE, // 128
-    }
-
-
     @Bind(R.id.surfaceView)
     SurfaceView surfaceView;
     @Bind(R.id.progressBar)
@@ -74,15 +60,15 @@ public class MyMediaPlayerActivity extends BeamBaseActivity {
     TextView btn2;
     @Bind(R.id.btn3)
     TextView btn3;
-    private MediaPlayer player;
-    private SurfaceHolder holder;
-    private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET};
     String uri;
     media_player_states state;
     PermissionUtil permissionUtil;
     Handler handler;
     ThreadPoolExecutor threadPoolExecutor;
+    private MediaPlayer player;
+    private SurfaceHolder holder;
+    private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +79,7 @@ public class MyMediaPlayerActivity extends BeamBaseActivity {
         initPlayer();
     }
 
-    private void initParams(){
+    private void initParams() {
         permissionUtil = new PermissionUtil(this);
         handler = new Handler(getMainLooper());
         threadPoolExecutor = ThreadPoolUtil.getThreadPoolExecutor();
@@ -109,7 +95,7 @@ public class MyMediaPlayerActivity extends BeamBaseActivity {
         player.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
             @Override
             public void onBufferingUpdate(MediaPlayer mediaPlayer, int i) {
-                progressBar.setSecondaryProgress(i*mediaPlayer.getDuration());
+                progressBar.setSecondaryProgress(i * mediaPlayer.getDuration());
             }
         });
         player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -128,108 +114,29 @@ public class MyMediaPlayerActivity extends BeamBaseActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        for (int i = 0; i < grantResults.length; i++) {
-            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                Toast.makeText(this, "请打开权限！", Toast.LENGTH_SHORT).show();
-                return;
-            }
-        }
-        try {
-            player.prepareAsync();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private void initSettings() {
         progressBar.setMax(player.getDuration());
         tvTotalTime.setText(TimeUtil.getTimeFromInt(player.getDuration()));
         threadPoolExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                while (player!=null){
+                while (player != null) {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            if(player==null)return;
+                            if (player == null) return;
                             tvCurrentTime.setText(TimeUtil.getTimeFromInt(player.getCurrentPosition()));
                             progressBar.setProgress(player.getCurrentPosition());
                         }
                     });
-                    try{
+                    try {
                         Thread.sleep(1000);
-                    }catch (InterruptedException e){
+                    } catch (InterruptedException e) {
                         sendNotification();
                     }
                 }
             }
         });
-    }
-
-    @OnClick({R.id.btn1, R.id.btn2, R.id.btn3,R.id.pause})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn1:
-                sendNotification();
-                break;
-            case R.id.btn2:
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse(uri), "video/mp4");
-                startActivity(intent);
-                break;
-            case R.id.btn3:
-                break;
-            case R.id.pause:
-                if (player.isPlaying()){
-                    player.pause();
-                    pause.setText("| >");
-                }else {
-                    player.start();
-                    pause.setText("| |");
-                }
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (player != null) {
-            player.release();
-            player = null;
-            threadPoolExecutor.shutdownNow();
-        }
-    }
-
-
-    private class MyCallBack implements SurfaceHolder.Callback {
-        @Override
-        public void surfaceCreated(SurfaceHolder holder) {
-            player.setDisplay(holder);
-            if (permissionUtil.hasPermission(permissions)) {
-                //if (state == media_player_states.MEDIA_PLAYER_STOPPED) {
-                    player.prepareAsync();
-                //}
-            } else {
-                permissionUtil.requestPermissions(permissions);
-            }
-        }
-
-        @Override
-        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-        }
-
-        @Override
-        public void surfaceDestroyed(SurfaceHolder holder) {
-            if (player.isPlaying()) {
-                player.stop();
-                state = media_player_states.MEDIA_PLAYER_STOPPED;
-            }
-        }
     }
 
     private void sendNotification() {
@@ -260,5 +167,96 @@ public class MyMediaPlayerActivity extends BeamBaseActivity {
         mNotificationManager.notify(1, notification);
         //结束广播
         //mNotificationManager.cancel(1);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (player != null) {
+            player.release();
+            player = null;
+            threadPoolExecutor.shutdownNow();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        for (int i = 0; i < grantResults.length; i++) {
+            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                Toast.makeText(this, "请打开权限！", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        try {
+            player.prepareAsync();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @OnClick({R.id.btn1, R.id.btn2, R.id.btn3, R.id.pause})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn1:
+                sendNotification();
+                break;
+            case R.id.btn2:
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse(uri), "video/mp4");
+                startActivity(intent);
+                break;
+            case R.id.btn3:
+                break;
+            case R.id.pause:
+                if (player.isPlaying()) {
+                    player.pause();
+                    pause.setText("| >");
+                } else {
+                    player.start();
+                    pause.setText("| |");
+                }
+        }
+    }
+
+
+    enum media_player_states {
+        MEDIA_PLAYER_STATE_ERROR,
+        MEDIA_PLAYER_IDLE, // 1
+        MEDIA_PLAYER_INITIALIZED, // 2
+        MEDIA_PLAYER_PREPARING, // 4
+        MEDIA_PLAYER_PREPARED, // 8
+        MEDIA_PLAYER_STARTED, // 16
+        MEDIA_PLAYER_PAUSED5, // 32
+        MEDIA_PLAYER_STOPPED, // 64
+        MEDIA_PLAYER_PLAYBACK_COMPLETE, // 128
+    }
+
+    private class MyCallBack implements SurfaceHolder.Callback {
+        @Override
+        public void surfaceCreated(SurfaceHolder holder) {
+            player.setDisplay(holder);
+            if (permissionUtil.hasPermission(permissions)) {
+                //if (state == media_player_states.MEDIA_PLAYER_STOPPED) {
+                player.prepareAsync();
+                //}
+            } else {
+                permissionUtil.requestPermissions(permissions);
+            }
+        }
+
+        @Override
+        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+        }
+
+        @Override
+        public void surfaceDestroyed(SurfaceHolder holder) {
+            if (player.isPlaying()) {
+                player.stop();
+                state = media_player_states.MEDIA_PLAYER_STOPPED;
+            }
+        }
     }
 }
