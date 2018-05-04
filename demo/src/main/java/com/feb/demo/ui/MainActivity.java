@@ -322,6 +322,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         float scrollY = tv_hello.getScrollY();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setTouchLisener() {
         final View contentView = popupWindow.getContentView();
         contentView.setClickable(true);

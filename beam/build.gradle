@@ -35,6 +35,8 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.timmy.tdialog:tdialog:1.3.1'
     compile 'org.greenrobot:eventbus:3.1.1'
+
+    compile 'com.blankj:utilcode:1.11.1'
 }
 
 ext {
