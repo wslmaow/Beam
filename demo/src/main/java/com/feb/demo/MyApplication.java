@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 
+import com.blankj.utilcode.util.Utils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
 import com.bumptech.glide.load.model.GlideUrl;
@@ -28,7 +29,7 @@ public class MyApplication extends Application {
         super.onCreate();
         Glide.get(this).register(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(RetrofitUtils.getOkHttpClient()));
         registerActivityLifecycleCallbacks(new MyActivityLifecycleCallbacks());
-
+        Utils.init(this);
     }
 
 

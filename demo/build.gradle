@@ -51,23 +51,14 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.jakewharton:butterknife:7.0.1'
     compile project(':beam')
-    compile 'io.reactivex.rxjava2:rxjava:2.1.7'
+    compile project(':common')
     compile 'com.yuyh.bubble:library:1.0.0'
     compile 'me.relex:circleindicator:1.2.2@aar'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.squareup.okhttp3:okhttp:3.3.1'
-    /*提供的Module*/
-    compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
+
     compile 'com.alibaba:fastjson:1.1.54.android'
     compile 'com.github.chrisbanes:PhotoView:2.1.3'
 
     compile 'com.github.easilycoder.EasyBridge:easybridge:0.1.2'
-    //compile 'com.github.easilycoder.EasyBridge:easybridge-annotation:0.1.2' // change the version to the newest one
-    //annotationProcessor 'com.github.easilycoder.EasyBridge:easybridge-processor:0.1.2'
+
 }

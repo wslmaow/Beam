@@ -21,9 +21,7 @@ import com.jude.beam.R;
 import com.jude.beam.bijection.BeamAppCompatActivity;
 import com.jude.beam.bijection.Presenter;
 import com.jude.beam.expansion.overlay.ViewExpansionDelegate;
-import com.timmy.tdialog.TDialog;
 
-import java.util.zip.Inflater;
 
 /**
  * Created by Mr.Jude on 2015/8/17.

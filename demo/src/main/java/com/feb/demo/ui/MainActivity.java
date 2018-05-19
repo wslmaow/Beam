@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -18,6 +19,8 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -40,6 +43,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ImageUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -74,6 +78,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
  * Created by Mr.Jude on 2016/2/22.
@@ -127,13 +132,15 @@ public class MainActivity extends BeamBaseActivity<MainPresenter> {
         //tv_hello.setText(setSpan(tv_hello.getText().toString()));
         String uri = "https://101.204.239.166/goldenBowl/rest/ioImage/bannner/5233375f791d4dd1816e5263fd470f73.png?userId=11069&token=6c140b78ca5c3746deff7fabf94fab8d";
         //String uri = "https://cdn2.jianshu.io/assets/web/nav-logo-4c7bbafe27adc892f3046e6978459bac.png";
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.bg_main_bottom);
         Glide.with(this)
-                .load("")
+                .load("https://raw.githubusercontent.com/wasabeef/glide-transformations/master/art/demo-org.jpg")
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .error(R.drawable.bg_main_bottom)
-                .error(new BitmapDrawable(BitmapUtils.decodeSampledBitmapFromResource(getResources(),
-                        R.drawable.bg_main_bottom, 100, 62)))
+                .placeholder(ImageUtils.bitmap2Drawable(ImageUtils.toRoundCorner(ImageUtils.getBitmap(R.drawable.bg_main_bottom),20)))
+                .bitmapTransform(new RoundedCornersTransformation(this,10,0))
+                /*.error(new BitmapDrawable(BitmapUtils.decodeSampledBitmapFromResource(getResources(),
+                        R.drawable.bg_main_bottom, 100, 62)))*/
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {

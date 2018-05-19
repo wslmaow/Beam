@@ -17,10 +17,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apr.coordinatorLayout.R;
 import com.apr.coordinatorLayout.adapter.MyPagerAdapter;
+import com.apr.coordinatorLayout.adapter.OptimizedRecyclerAdapter;
 import com.apr.coordinatorLayout.holder.MyViewHolder;
+import com.blankj.utilcode.util.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +70,12 @@ public class MyCoordinatorLayoutActivity extends AppCompatActivity {
             public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
                 TextView textView = (TextView) holder.itemView.findViewById(R.id.item_text);
                 textView.setText("item : "+position);
+                /*textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(MyCoordinatorLayoutActivity.this,"ok",Toast.LENGTH_SHORT).show();
+                    }
+                });*/
             }
 
             @Override
@@ -72,9 +83,30 @@ public class MyCoordinatorLayoutActivity extends AppCompatActivity {
                 return 21;
             }
         };
+        List<String> data=new ArrayList<>();
+        for (int i=0;i<30;i++){
+            data.add("test data "+i);
+        }
+        OptimizedRecyclerAdapter optimizedRecyclerAdapter=new OptimizedRecyclerAdapter(R.layout.item_recycler,data);
+        optimizedRecyclerAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                Toast.makeText(MyCoordinatorLayoutActivity.this,"ok",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        optimizedRecyclerAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Toast.makeText(MyCoordinatorLayoutActivity.this,"no",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
         for (int i=0;i<3;i++){
             viewHolder = new RecyclerView(this);
-            viewHolder.setAdapter(adapter);
+            //viewHolder.setAdapter(adapter);
+            viewHolder.setAdapter(optimizedRecyclerAdapter);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             viewHolder.setLayoutManager(layoutManager);
             pagerViews.add(viewHolder);
