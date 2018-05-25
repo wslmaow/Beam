@@ -3,10 +3,10 @@ apply plugin: 'me.tatarka.retrolambda'
 android {
     signingConfigs {
         config {
-            keyAlias 'android.keystore'
+           /* keyAlias 'android.keystore'
             keyPassword '123456'
             storeFile file('E:/android.keystore')
-            storePassword '123456'
+            storePassword '123456'*/
         }
     }
     compileSdkVersion 23

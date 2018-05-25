@@ -12,12 +12,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ import android.widget.Toast;
 import com.feb.media.R;
 import com.feb.media.utils.PermissionUtil;
 import com.feb.media.utils.ThreadPoolUtil;
+import com.feb.media.utils.ThumbnailUtil;
 import com.feb.media.utils.TimeUtil;
 import com.jude.beam.expansion.BeamBaseActivity;
 
@@ -65,6 +68,8 @@ public class MyMediaPlayerActivity extends BeamBaseActivity {
     PermissionUtil permissionUtil;
     Handler handler;
     ThreadPoolExecutor threadPoolExecutor;
+    @Bind(R.id.image)
+    ImageView image;
     private MediaPlayer player;
     private SurfaceHolder holder;
     private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -77,6 +82,7 @@ public class MyMediaPlayerActivity extends BeamBaseActivity {
         ButterKnife.bind(this);
         initParams();
         initPlayer();
+        image.setImageBitmap(ThumbnailUtil.createVideoThumbnail(uri, MediaStore.Images.Thumbnails.MINI_KIND));
     }
 
     private void initParams() {

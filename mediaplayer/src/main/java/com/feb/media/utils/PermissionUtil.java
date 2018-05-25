@@ -14,9 +14,6 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.feb.media.R;
-import com.timmy.tdialog.TDialog;
-import com.timmy.tdialog.base.BindViewHolder;
-import com.timmy.tdialog.listener.OnViewClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +47,7 @@ public class PermissionUtil {
     }
 
     private void showDialog(){
-        new TDialog.Builder(((FragmentActivity)context).getSupportFragmentManager())
+        /*new TDialog.Builder(((FragmentActivity)context).getSupportFragmentManager())
                 .setLayoutRes(R.layout.dialog_seting_permissions)
                 .setWidth(400)
                 .setGravity(Gravity.CENTER)
@@ -70,7 +67,7 @@ public class PermissionUtil {
                     }
                 })
                 .create()
-                .show();
+                .show();*/
     }
 
 

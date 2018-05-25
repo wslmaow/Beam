@@ -3,9 +3,13 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'android.keystore'
+            /*keyAlias 'android.keystore'
             keyPassword '123456'
             storeFile file('E:/android.keystore')
+            storePassword '123456'*/
+            keyAlias 'employee'
+            keyPassword '123456'
+            storeFile file('D:/employee_key_test.test')
             storePassword '123456'
         }
     }
