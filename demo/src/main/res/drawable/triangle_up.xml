@@ -8,5 +8,6 @@
             android:height="10dp"
             android:width="10dp" />
         <solid android:color="#7d72ff" />
+        <corners android:radius="1dp"/>
     </shape>
 </rotate>
