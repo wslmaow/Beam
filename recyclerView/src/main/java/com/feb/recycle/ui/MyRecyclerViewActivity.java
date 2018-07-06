@@ -1,5 +1,6 @@
 package com.feb.recycle.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -53,6 +54,12 @@ public class MyRecyclerViewActivity extends BeamBaseActivity<MyRecyclerViewPrese
     }
 
     void initView(){
+        myAdapter.setOnItemClickListener(new RecyclerArrayAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                startActivity(new Intent(MyRecyclerViewActivity.this,MyTestActivity.class));
+            }
+        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recycler.setLayoutManager(layoutManager);
         recycler.setAdapterWithProgress(myAdapter);

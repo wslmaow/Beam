@@ -26,7 +26,7 @@ public class SimplePaddingDecoration extends RecyclerView.ItemDecoration {
         textPaint.setTextSize(30);
         fontMetrics = new Paint.FontMetrics();
         textPaint.getFontMetrics(fontMetrics);
-        textPaint.setTextAlign(Paint.Align.LEFT);
+        textPaint.setTextAlign(Paint.Align.CENTER);
 
     }
 
@@ -35,16 +35,19 @@ public class SimplePaddingDecoration extends RecyclerView.ItemDecoration {
     private TextPaint textPaint;
     private Paint.FontMetrics fontMetrics;
 
-    @Override
+    @Override//设置item四周的margin
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
         int position = parent.getChildAdapterPosition(view);
-        outRect.top = dividerHeight;
-        outRect.bottom = 5;
-        view.setBackgroundColor(Color.parseColor("#78dd33"));
+
+        outRect.top = 50;//类似item上方的margin
+        outRect.left = 10;//margin_left
+        outRect.right = 10;//margin_right
+        outRect.bottom = 50;//margin_bottom
+        //view.setBackgroundColor(Color.parseColor("#78dd33"));//设置item背景颜色
     }
 
-    @Override
+    @Override//可以实现类似绘制背景的效果，内容在上面
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDraw(c, parent, state);
         int childCount = parent.getChildCount();
@@ -57,13 +60,15 @@ public class SimplePaddingDecoration extends RecyclerView.ItemDecoration {
             float top = view.getBottom();
             float bottom = view.getBottom() + 5;
             textPaint.setTextAlign(Paint.Align.CENTER);
-            c.drawText("huij",left,view.getTop()-fontMetrics.bottom,textPaint);
-            c.drawRect(left, top, right, bottom, dividerPaint);
+            //在item的上方绘制文字,fontMetrics.bottom指的是最下字符到baseline的值，即descent的最大值,这样文字的最下边也在item上方
+            c.drawText("teat",view.getLeft()+20,view.getTop()-fontMetrics.bottom,textPaint);
+
+            //c.drawRect(left, top, right, bottom, dividerPaint);//在item的下方绘制矩形
         }
 
     }
 
-    @Override
+    @Override//可以绘制在内容的上面，覆盖内容
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDrawOver(c, parent, state);
         int childCount = parent.getChildCount();
@@ -74,15 +79,15 @@ public class SimplePaddingDecoration extends RecyclerView.ItemDecoration {
         dividerPaint.setColor(Color.BLUE);
         for (int i = 0; i < childCount; i++) {
             View view = parent.getChildAt(i);
-            float top = view.getTop()-dividerHeight;
+            //float top = view.getTop()-dividerHeight;
             float bottom = view.getBottom();
-            float bottom2 = Math.max(dividerHeight, view.getTop());
-            if (bottom<bottom2){
-                bottom2 = bottom;
+            float top = Math.max(dividerHeight, view.getTop());//在item 的上方绘制50px高的矩形,在滑动过程中item 的top到达矩形的上边缘时，将矩形固定在最上方，即0~50px的地方,直到被下一个item滑上来覆盖
+            if (bottom<top){
+                top = bottom;//当滑动过程中item 的bottom到达矩形的下边缘，即item的内容已经被矩形全部覆盖后，使矩形向上滑动
             }
             //c.drawRect(left, top, right, bottom, dividerPaint);
-            c.drawRect(left, bottom2 - dividerHeight, right, bottom2, dividerPaint);
-            c.drawText("huij", left, bottom2 - fontMetrics.bottom, textPaint);
+            c.drawRect(left, top - dividerHeight, right, top, dividerPaint);
+            c.drawText("hijk", left, top - fontMetrics.bottom, textPaint);
 
         }
     }

@@ -3,10 +3,14 @@ apply plugin: 'me.tatarka.retrolambda'
 android {
     signingConfigs {
         config {
-           /* keyAlias 'android.keystore'
+            /* keyAlias 'android.keystore'
+             keyPassword '123456'
+             storeFile file('E:/android.keystore')
+             storePassword '123456'*/
+            keyAlias 'employee'
             keyPassword '123456'
-            storeFile file('E:/android.keystore')
-            storePassword '123456'*/
+            storeFile file('D:/employee_key_test.test')
+            storePassword '123456'
         }
     }
     compileSdkVersion 23
@@ -41,9 +45,7 @@ dependencies {
     compile 'com.jude:utils:1.0.7'
     compile project(':beam')
     compile project(':common')
-
     compile 'com.yuyh.bubble:library:1.0.0'
     compile 'me.relex:circleindicator:1.2.2@aar'
-
     compile 'com.alibaba:fastjson:1.1.54.android'
 }

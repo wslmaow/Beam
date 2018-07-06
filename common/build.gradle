@@ -51,5 +51,8 @@ dependencies {
     //blankjutils
     compile 'com.blankj:utilcode:1.11.1'
 
+    compile 'com.github.omadahealth:swipy:1.2.3@aar'
+
+
 
 }
