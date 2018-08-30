@@ -1,1 +1,1 @@
-include ':beam', ':recyclerView', ':mediaplayer', ':demo', ':webview', ':coordinatorLayout', ':common', ':bottomnavigationview'
+include ':beam', ':recyclerView', ':mediaplayer', ':demo', ':webview', ':coordinatorLayout', ':common', ':bottomnavigationview', ':databinding'

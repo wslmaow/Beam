@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.loadmore.LoadMoreView;
 import com.feb.recycle.R;
 import com.jude.beam.expansion.BeamBaseActivity;
 import com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout;
@@ -49,6 +50,28 @@ public class MyTestActivity extends BeamBaseActivity {
                  helper.setText(R.id.text,item);
             }
         };
+        adapter.setLoadMoreView(new LoadMoreView() {
+            @Override
+            public int getLayoutId() {
+                return R.layout.view_load_more;
+            }
+
+            @Override
+            protected int getLoadingViewId() {
+                return R.id.load_more_loading_view;
+            }
+
+            @Override
+            protected int getLoadFailViewId() {
+                return R.id.load_more_load_fail_view;
+            }
+
+            @Override
+            protected int getLoadEndViewId() {
+                return 0;
+            }
+
+        });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -58,7 +81,7 @@ public class MyTestActivity extends BeamBaseActivity {
     }
 
     void initListener(){
-        swipyRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
+        /*swipyRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(SwipyRefreshLayoutDirection direction) {
                 if (direction == SwipyRefreshLayoutDirection.TOP){
@@ -70,6 +93,16 @@ public class MyTestActivity extends BeamBaseActivity {
                     adapter.notifyItemChanged(data.size()-1);
                 }
                 swipyRefreshLayout.setRefreshing(false);
+            }
+        });*/
+
+        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                data.set(data.size()-1,"bottom_pull_up");
+                //Cannot call this method while RecyclerView is computing a layout or scrolling android.support.v7.widget.RecyclerView
+                //adapter.notifyItemChanged(data.size()-1);
+                //adapter.loadMoreEnd(true);
             }
         });
     }
