@@ -48,4 +48,6 @@ dependencies {
     compile 'com.yuyh.bubble:library:1.0.0'
     compile 'me.relex:circleindicator:1.2.2@aar'
     compile 'com.alibaba:fastjson:1.1.54.android'
+
+    //compile project(':qmui')
 }

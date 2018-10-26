@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
 
 
 
     defaultConfig {
-        applicationId "com.june.bottomnavigationview"
-        minSdkVersion 15
-        targetSdkVersion 26
+        applicationId "com.october.slidingconflict"
+        minSdkVersion 21
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
 
@@ -29,12 +29,11 @@ android {
         }
     }
 
-
-
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     compile project(':common')
 }

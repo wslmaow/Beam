@@ -1,4 +1,4 @@
-package com.feb.webview;
+package com.october.slidingconflict;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -8,9 +8,7 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -18,39 +16,40 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
-import java.util.ArrayList;
-import java.util.List;
+public class MainActivity extends AppCompatActivity {
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
-public class MyWebviewActivity extends AppCompatActivity {
-
-    @Bind(R.id.webView)
+    @butterknife.Bind(R.id.webview)
     WebView webView;
-    @Bind(R.id.progressBar)
-    ProgressBar progressBar;
+    @butterknife.Bind(R.id.scrollView)
+    ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_webview);
-        ButterKnife.bind(this);
+        setContentView(R.layout.activity_main);
+        butterknife.ButterKnife.bind(this);
 
-
-
-       /* ButterKnife.bind(this);
-        initParams();
-        initView();*/
-        //initListener();
+        initView();
+        webView.loadUrl("https://www.baidu.com/");
+        webView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                scrollView.requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
     }
 
-    private void initParams() {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        startActivity(new Intent(this,MainActivity.class));
+    }
+
+    public void onClick(View view){
+        startActivity(new Intent(this,MySecondActivity.class));
     }
 
     private void initView() {
@@ -85,7 +84,7 @@ public class MyWebviewActivity extends AppCompatActivity {
             @Override
             public void onPageCommitVisible(WebView view, String url) {
                 super.onPageCommitVisible(view, url);
-                progressBar.setVisibility(View.GONE);
+                //progressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -115,7 +114,7 @@ public class MyWebviewActivity extends AppCompatActivity {
         webSettings.setUseWideViewPort(false);
         webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
         webSettings.setBlockNetworkImage(false);//解决图片不显示
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
             webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         //wv_webView.addJavascriptInterface(new JsFun(SimpleWebActivity.this), "android");
@@ -123,32 +122,10 @@ public class MyWebviewActivity extends AppCompatActivity {
         CookieManager cookieManager = CookieManager.getInstance();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             cookieManager.setAcceptThirdPartyCookies(webView, true);
-        } else {
+        }else{
             cookieManager.setAcceptCookie(true);
         }
 
     }
 
-    private void initListener() {
-        webView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
-                    if (i == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
-                        webView.goBack();
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
-
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.ACTION_DOWN) {
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 }
