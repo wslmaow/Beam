@@ -35,16 +35,32 @@ android {
             signingConfig signingConfigs.release
         }
     }
-    flavorDimensions "channle", "version"
-    productFlavors{
-        app1{
-            dimension "version"
+    flavorDimensions "channel", "area"//维度定义
+    productFlavors{//维度配置：渠道（2个）、地区（3个），加上buildType(debug+release)产生12个变体（2*3*2）
+        xiaomi{
+            dimension "channel"//渠道
             resValue "string","app_name","windwill"
+            manifestPlaceholders = [app_icon:"@drawable/ic_launcher_entp"]
         }
-        app2{
-            dimension "channle"
+        huawei{
+            dimension "channel"
             applicationIdSuffix ".deno"
             resValue "string","app_name","demo"
+            manifestPlaceholders = [app_icon:"@drawable/ic_launcher"]
+        }
+        changzhou{
+            dimension "area"
+            manifestPlaceholders = [
+                    JPUSH_APPKEY : "jpush", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+                    BDLOCATION_KEY:"ujdr876i8tyukguyiyre5765767nhg"
+            ]
+        }
+        chengde{
+            dimension "area"
+        }
+        tonglu{
+            dimension "area"
         }
     }
 }
