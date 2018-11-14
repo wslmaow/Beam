@@ -25,6 +25,8 @@
 
         <activity android:name=".ui.MyTestActivity"/>
 
+        <activity android:name=".ui.TRcyclerViewActivity"/>
+
     </application>
 
 </manifest>

@@ -1,8 +1,12 @@
 package com.feb.recycle.ui;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -78,6 +82,10 @@ public class MyTestActivity extends BeamBaseActivity {
         recyclerView.setAdapter(adapter);
         swipyRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.blue));
         swipyRefreshLayout.setDirection(SwipyRefreshLayoutDirection.BOTH);
+        if (Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP){
+            swipyRefreshLayout.setNestedScrollingEnabled(true);
+            recyclerView.setNestedScrollingEnabled(true);
+        }
     }
 
     void initListener(){
@@ -105,5 +113,13 @@ public class MyTestActivity extends BeamBaseActivity {
                 //adapter.loadMoreEnd(true);
             }
         });
+
+       adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+           @Override
+           public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+               startActivity(new Intent(MyTestActivity.this,TRcyclerViewActivity.class));
+           }
+       });
+
     }
 }

@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.feb.recycle.R;
+import com.feb.recycle.view.LoadingState;
 import com.jude.beam.Beam;
 import com.jude.beam.expansion.BeamBaseActivity;
 import com.jude.beam.expansion.list.ListConfig;
@@ -13,6 +14,7 @@ import com.jude.beam.expansion.overlay.ViewExpansionDelegate;
 import com.jude.beam.expansion.overlay.ViewExpansionDelegateProvider;
 import com.feb.recycle.utils.RetrofitUtils;
 import com.jude.utils.JUtils;
+import com.tqzhang.stateview.core.LoadState;
 
 import java.io.InputStream;
 
@@ -37,6 +39,11 @@ public class APP extends Application {
                         setRefreshAble(true).
                         setContainerLayoutRes(R.layout.activity_recyclerview).
                         setLoadmoreAble(true));
+
+        new LoadState.Builder()
+                .register(new LoadingState())
+                .setDefaultCallback(LoadingState.class)
+                .build();
 
     }
 }

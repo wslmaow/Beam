@@ -49,5 +49,7 @@ dependencies {
     compile 'me.relex:circleindicator:1.2.2@aar'
     compile 'com.alibaba:fastjson:1.1.54.android'
 
-    //compile project(':qmui')
+    compile 'com.github.SelfZhangTQ:TRecyclerView:2.4.5'
+    api 'com.github.SelfZhangTQ:loadState:1.1.0'
+
 }
