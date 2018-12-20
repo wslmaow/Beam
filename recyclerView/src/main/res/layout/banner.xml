@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.feb.recycle.view.BannerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/banner"
+    android:layout_width="match_parent"
+    android:focusable="false"
+    android:layout_height="wrap_content" />

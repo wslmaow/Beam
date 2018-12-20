@@ -30,4 +30,5 @@ dependencies {
 
     compile project(':common')
     compile project(':beam')
+    compile 'com.github.lzyzsd:jsbridge:1.0.4'
 }
