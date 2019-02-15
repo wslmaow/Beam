@@ -1,1 +1,1 @@
-include ':beam', ':recyclerView', ':mediaplayer', ':demo', ':webview', ':coordinatorLayout', ':common', ':bottomnavigationview', ':databinding', ':slidingconflict'
+include ':beam', ':recyclerView', ':mediaplayer', ':demo', ':webview', ':coordinatorLayout', ':common', ':bottomnavigationview', ':databinding', ':slidingconflict', ':kotlinmodule'

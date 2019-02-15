@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
 
     defaultConfig {
         applicationId "com.feb.webview"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
 
@@ -31,4 +31,6 @@ dependencies {
     compile project(':common')
     compile project(':beam')
     compile 'com.github.lzyzsd:jsbridge:1.0.4'
+    compile 'com.birbit:android-priority-jobqueue:2.0.1'
+
 }

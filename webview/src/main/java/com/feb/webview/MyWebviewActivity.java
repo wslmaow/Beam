@@ -22,6 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.github.lzyzsd.jsbridge.BridgeWebView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,7 +30,7 @@ import butterknife.ButterKnife;
 public class MyWebviewActivity extends AppCompatActivity {
 
     @Bind(R.id.webView)
-    WebView webView;
+    BridgeWebView webView;
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
     @Bind(R.id.progressBar_bg)
@@ -80,7 +81,7 @@ public class MyWebviewActivity extends AppCompatActivity {
                         }
                     }
                 }
-                return true;
+                return false;
             }
 
             @Override
@@ -118,7 +119,7 @@ public class MyWebviewActivity extends AppCompatActivity {
         webSettings.setPluginState(WebSettings.PluginState.ON);
         webSettings.setDatabaseEnabled(true);
         //设置定位的数据库路径
-        String dir = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
+        String dir = getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
         webSettings.setGeolocationDatabasePath(dir);
         //启用地理定位
         webSettings.setGeolocationEnabled(true);
@@ -158,6 +159,7 @@ public class MyWebviewActivity extends AppCompatActivity {
                 return false;
             }
         });
+
 
     }
 
