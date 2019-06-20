@@ -1,15 +1,15 @@
 apply plugin: 'com.android.library'
 
 ext{
-    supportLibraryVersion = "24.0.0"
+    supportLibraryVersion = "25.0.0"
 }
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
 

@@ -35,10 +35,19 @@ android {
 
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':beam')
     compile project(':common')
 
     implementation 'com.github.goldze:MVVMHabit:2.0.8'
+    api(name: 'screencaprecord_1.0.0.2', ext:'aar')
+    api(name: 'antihijack_1.0.0.2', ext:'aar')
+    api(name: 'safekeyboard_1.0.0.2', ext:'aar')
 }

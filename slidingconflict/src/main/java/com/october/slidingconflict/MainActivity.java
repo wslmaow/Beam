@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        startActivity(new Intent(this,MainActivity.class));
+        //startActivity(new Intent(this,MainActivity.class));
     }
 
     public void onClick(View view){

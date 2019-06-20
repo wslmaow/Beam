@@ -17,13 +17,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="请输入用户名"
-            android:text="@={loginViewModel.userName}"/>
+            android:text="@={loginViewModel.userName}"
+            android:imeOptions="actionDone"
+            android:lines="1"
+            android:singleLine="true"/>
 
-        <android.support.v7.widget.AppCompatEditText
+        <com.qihoo.safekeyboard.PasswdEditText
+            android:id="@+id/qihoo_keyboard_et_passwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="请输入密码"
-            android:text="@={loginViewModel.passWord}"/>
+            android:text="@={loginViewModel.passWord}"
+            binding:keypad_letter_random="true"
+            binding:keypad_number_random="true"
+            binding:keypad_symbol_random="true"
+            binding:keypad_key_effect="true"
+            binding:max_length="20"/>
 
         <android.support.v7.widget.AppCompatTextView
             android:layout_marginTop="@dimen/dp_40"

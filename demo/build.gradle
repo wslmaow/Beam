@@ -5,11 +5,11 @@ android {
 
     signingConfigs {
         release {
-            /*storeFile file('D:/android.keystore')//签名文件路径
+            storeFile file('D:/employee_key_test.test')//签名文件路径
             storePassword "123456"
-            keyAlias 'android.keystore'
+            keyAlias 'employee'
             keyPassword "123456"  //签名密码
-            println("====== signingConfigs.release ======")*/
+            println("====== signingConfigs.release ======")
         }
     }
 

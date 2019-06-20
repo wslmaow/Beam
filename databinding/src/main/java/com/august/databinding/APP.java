@@ -2,6 +2,11 @@ package com.august.databinding;
 
 import com.august.databinding.activity.LoginActivity;
 import com.blankj.utilcode.util.Utils;
+import com.jiagu.sdk.QihooAntiActivityPhishingProtected;
+import com.jiagu.sdk.QihooSafeKeyBoardProtected;
+import com.qihoo.jiagu.antihijack.AntiMain;
+
+import java.util.HashSet;
 
 import me.goldze.mvvmhabit.base.BaseApplication;
 import me.goldze.mvvmhabit.crash.CaocConfig;
@@ -28,5 +33,11 @@ public class APP extends BaseApplication {
                 //.errorActivity(YourCustomErrorActivity.class) //崩溃后的错误activity
                 //.eventListener(new YourCustomEventListener()) //崩溃后的错误监听
                 .apply();
+
+        QihooSafeKeyBoardProtected.install(this);
+        QihooAntiActivityPhishingProtected.install(this);
+        HashSet<String> set = new HashSet<>();
+        set.add(LoginActivity.class.getCanonicalName());
+        AntiMain.init(this,set);
     }
 }

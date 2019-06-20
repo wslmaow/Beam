@@ -128,6 +128,7 @@ class MainActivity : AppCompatActivity() {
 
         person.lastName = "wang"
 
+
         println("lastName:${person.lastName}")
 
         person.no = 9

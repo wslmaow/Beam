@@ -14,7 +14,6 @@ import com.jude.beam.expansion.overlay.ViewExpansionDelegate;
 import com.jude.beam.expansion.overlay.ViewExpansionDelegateProvider;
 import com.feb.recycle.utils.RetrofitUtils;
 import com.jude.utils.JUtils;
-import com.tendcloud.tenddata.TCAgent;
 import com.tqzhang.stateview.core.LoadState;
 
 import java.io.InputStream;
