@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
     //冒泡排序，两两比较、交换
     int[] bubbleSort(int[] sourceData){
         for (int i=0;i<sourceData.length;i++){
-            for (int j=0;j<sourceData.length-i;j++){
-                if (sourceData[j]>sourceData[j+1]){
-                    int tmp = sourceData[j];
-                    sourceData[j] = sourceData[j+1];
-                    sourceData[j+1] = tmp;
+            for (int j=sourceData.length-1;j>i;j--){
+                if (sourceData[j-1]>sourceData[j]){
+                    int tmp = sourceData[j-1];
+                    sourceData[j-1] = sourceData[j];
+                    sourceData[j] = tmp;
                 }
             }
         }

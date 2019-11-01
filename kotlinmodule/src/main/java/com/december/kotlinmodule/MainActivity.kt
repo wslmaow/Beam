@@ -2,26 +2,35 @@ package com.december.kotlinmodule
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.AppCompatTextView
+import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
+    val text:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         //vars(2,3)
-        function(Array(3,{ i ->  "index:$i"}))
+        function(Array(3) { i -> "index:$i" })
+        helloworld.setOnClickListener {
+            Toast.makeText(this,helloworld.text,Toast.LENGTH_SHORT).show()
+        }
     }
 
 
-    fun function1(a:Int , b :Int):Int{
-        return  (a+b)
+    fun function1(a: Int, b: Int): Int {
+        return (a + b)
     }
-    public fun function2(a:Int , b :Int) : Int = (a+b)
 
-    fun function3(a:Int , b :Int):Unit{
+    fun function2(a: Int, b: Int): Int = (a + b)
+
+    fun function3(a: Int, b: Int): Unit {
         /*  条件表达式*/
-        val c = if (a>b) a else b
+        val c = if (a > b) a else b
 
         when (a) {
             1 -> print("a == 1")
@@ -35,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        return  print(a+b)
+        return print(a + b)
     }
 
     /*  循环表达式   */
@@ -51,8 +60,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     /*  基本语法    */
-    fun vars(vararg v:Int){
-        for(vt in v){
+    fun vars(vararg v: Int) {
+        for (vt in v) {
             print(vt)
         }
 
@@ -68,14 +77,14 @@ class MainActivity : AppCompatActivity() {
 
         /*//空安全设计*/
         //类型后面加?表示可为空
-        var age :String? = "2"
+        var age: String? = "2"
         //抛出空指针异常
         val ages = age!!.toInt()
         //不做处理返回 null
         val ages1 = age?.toInt()
         //age为空返回-1
         val ages2 = age?.toInt() ?: -1
-        if (age is String){
+        if (age is String) {
             // 做过类型判断以后，obj会被系统自动转换为String类型
             print(age.length)
         }
@@ -84,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         for (i in 1..4) print(i) // 输出“1234”
 
         for (i in 4..1) print(i) // 什么都不输出
-         val i = 0
+        val i = 0
         if (i in 1..10) { // 等同于 1 <= i && i <= 10
             println(i)
         }
@@ -118,8 +127,8 @@ class MainActivity : AppCompatActivity() {
             }
 
         var heiht: Float = 145.4f
-             set(d){
-                field=d + 1
+            set(d) {
+                field = d + 1
             }
     }
 
